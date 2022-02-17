@@ -55,12 +55,17 @@
       <div class="bground">
         <div class="content">
           <span class="close"></span>
-          <div class="modal-body">
+
+          <div class="modal-body">          
+            <div class="valid-form">
+              <p>Merci ! Votre réservation a été reçue.</p>
+            </div>
             <form
               name="reserve"
+              id="form"
               action="index.html"
               method="get"
-              onsubmit="return validate();"
+              onsubmit="return validate(event);"
             >
               <div
                 class="formData">

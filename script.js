@@ -8,6 +8,7 @@ const errorMsg = {
   conditions: "Vous devez acceptez les conditions d'utilisation pour continuer"
 };
 
+const modalForm = document.getElementById("form");
 const checkedBoxes = document.querySelectorAll(".checkbox-input");
 const inputs = document.querySelectorAll("input[type=text]")
 const firstname = document.querySelector("#first");
@@ -18,7 +19,9 @@ const tournament = document.querySelector("#quantity");
 const radios = document.getElementsByName("location")
 const conditions = document.querySelector("#checkbox1");
 const submitButton = document.querySelector(".btn-submit");
+const validated = document.querySelector(".valid-form")
 
+console.log(modalForm)
 //Regex
   //Lettres + quelques caractères spéciaux, accents et tirets + longueur de 2 
 const letterRegex = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/;
@@ -52,58 +55,68 @@ function removeError(element) {
 
 //Check form
 
-function formCheck() {
+function formCheck(e) {
 
   function testNames(name){
     if(letterRegex.test(name.value)){
-      removeError(name)
-      return true
-    } 
-    else setError(name, errorMsg.name)
-  }
+      removeError(name);
+      return true;
+    } else {
+      setError(name, errorMsg.name);
+      return false;
+    };
+  };
 
   function testEmail(email){
       if(emailRegex.test(email.value)) {
-        removeError(email) 
-        return true
+        removeError(email);
+        return true;
+      } else {
+        setError(email, errorMsg.email);
+        return false;
       }
-      else setError(email, errorMsg.email);
     }
   
 
  function testBirthdate(date) {
     if(!date.value) {
-      setError(date, errorMsg.birthDate)
-      return false
+      setError(date, errorMsg.birthDate);
+      return false;
+    } else {
+      removeError(date);
+      return true;
     }
-    else removeError(date)
   }
 
   function testRadios(radios) {
-    
     for(let radio in radios) {
-      if(radio.checked) {
-        removeError(radios)
+      if(!radio.checked) {
+        setError(radio, errorMsg.cities)
+        return false
+      } else {
+        removeError(radio)
         return true
       };
     };
-    setError(radios, errorMsg.cities)
-  }
-
-  function tournamentCount(tournament) {
-      if(integerRegex.test(tournament.value)) {
-        removeError(tournament)
-        return true
-      }
-      else setError(tournament, errorMsg.tournament);
   };
 
+  function tournamentCount(tournament) {
+    if(integerRegex.test(tournament.value)) {
+      removeError(tournament);
+      return true;
+    } else {
+      setError(tournament, errorMsg.tournament);
+      return false;
+    };
+  };
 
   function conditionsValidation(conditions) {
-    if(!conditions.checked) setError(conditions, errorMsg.conditions)
-    else {
-      removeError(conditions)
-      return true
+    if(!conditions.checked) {
+      setError(conditions, errorMsg.conditions);
+      return false;
+    } else {
+      removeError(conditions);
+      return true;
     };
   };
 
@@ -113,24 +126,19 @@ function formCheck() {
   tournamentCount(tournament)
   testRadios(radios)
   conditionsValidation(conditions)
-
-  /* if(testEmail() && testBirthdate() && tournamentCount() && testRadios() && conditionsValidation()) return true */
-
+  
+if(testNames(firstname) && testNames(lastname) && testEmail(email) &&
+  testBirthdate(date) && tournamentCount(tournament) && 
+  conditionsValidation(conditions)) return true
 };
 
-
-function validate() {
-    if(formCheck()) return true
+function validate(e) {
+  e.preventDefault();
+    if(formCheck()) {
+      modalForm.style.display="none";
+      validated.style.display="flex";
+    }
     else return false
 }
-
-submitButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  validate()
-}) 
-
-
-
-
 
 closeModal()
