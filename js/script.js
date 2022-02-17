@@ -18,12 +18,10 @@ const date = document.querySelector("#birthdate");
 const tournament = document.querySelector("#quantity");
 const radios = document.getElementsByName("location")
 const conditions = document.querySelector("#checkbox1");
-const submitButton = document.querySelector(".btn-submit");
 const validated = document.querySelector(".valid-form")
+const radio = document.querySelector("#location1")
 
-console.log(modalForm)
 //Regex
-  //Lettres + quelques caractères spéciaux, accents et tirets + longueur de 2 
 const letterRegex = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/;
 const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 const integerRegex = /^\d+$/;
@@ -32,7 +30,6 @@ const integerRegex = /^\d+$/;
 function closeModal() {
   const closeBtn = document.querySelector(".close");
   const modal = document.querySelector(".bground");
-
   closeBtn.addEventListener("click", () => {
     inputs.forEach((input) => input.value="");
     checkedBoxes.forEach((checkBox) => checkBox.checked = false);
@@ -54,7 +51,6 @@ function removeError(element) {
 };
 
 //Check form
-
 function formCheck(e) {
 
   function testNames(name){
@@ -74,10 +70,9 @@ function formCheck(e) {
       } else {
         setError(email, errorMsg.email);
         return false;
-      }
-    }
+      };
+    };
   
-
  function testBirthdate(date) {
     if(!date.value) {
       setError(date, errorMsg.birthDate);
@@ -85,17 +80,17 @@ function formCheck(e) {
     } else {
       removeError(date);
       return true;
-    }
-  }
+    };
+  };
 
   function testRadios(radios) {
     for(let radio in radios) {
-      if(!radio.checked) {
-        setError(radio, errorMsg.cities)
-        return false
-      } else {
-        removeError(radio)
+      if(radio.checked) {
+        removeError(radio.parentNode)
         return true
+      } else {
+        setError(radios, errorMsg.cities)
+        return false
       };
     };
   };
@@ -124,11 +119,11 @@ function formCheck(e) {
   testEmail(email)
   testBirthdate(date)
   tournamentCount(tournament)
-  testRadios(radios)
+  testRadios(radios[0])
   conditionsValidation(conditions)
   
 if(testNames(firstname) && testNames(lastname) && testEmail(email) &&
-  testBirthdate(date) && tournamentCount(tournament) && 
+  testBirthdate(date) && tournamentCount(tournament) && testRadios(radios[0]) &&
   conditionsValidation(conditions)) return true
 };
 
