@@ -7,14 +7,17 @@ const errorMsg = {
   cities: "Veuillez choisir une ville",
   conditions: "Vous devez acceptez les conditions d'utilisation pour continuer"
 };
-const form = document.querySelector(".formData");
-const checkedBoxes = document.querySelectorAll(".checkbox-input");
-const inputs = document.querySelectorAll("input[type=text]");
-const email = document.querySelector("input[type=email]");
-const date = document.querySelector("input[type=date]");
-const tournament = document.querySelector("#quantity");
-const radios = document.querySelectorAll("input[type=radio]")
 
+const checkedBoxes = document.querySelectorAll(".checkbox-input");
+const inputs = document.querySelectorAll("input[type=text]")
+const firstname = document.querySelector("#first");
+const lastname = document.querySelector("#last");
+const email = document.querySelector("#email");
+const date = document.querySelector("#birthdate");
+const tournament = document.querySelector("#quantity");
+const radios = document.getElementsByName("location")
+const conditions = document.querySelector("#checkbox1");
+const submitButton = document.querySelector(".btn-submit");
 
 //Regex
   //Lettres + quelques caractères spéciaux, accents et tirets + longueur de 2 
@@ -51,51 +54,80 @@ function removeError(element) {
 
 function formCheck() {
 
-
-  inputs.forEach((input) => {
-    input.addEventListener("change", (e) => {
-      if(letterRegex.test(input.value)) removeError(e.target)
-      else setError(e.target, errorMsg.name)
-    })
-  })
-
-  function testEmail(){
-    email.addEventListener("change", (e) => {
-      if(emailRegex.test(email.value)) removeError(e.target)
-      else setError(e.target, errorMsg.email);
-    })
+  function testNames(name){
+    if(letterRegex.test(name.value)){
+      removeError(name)
+      return true
+    } 
+    else setError(name, errorMsg.name)
   }
 
-  function testBirthdate() {
-    let birthDate = new Date(date.value)
-  }
-
-  function testRadios() {
-    radios.addEventListener("change", (e) => {
-      for(let radio of radios) {
-        if(radio.checked) removeError(e.target)
+  function testEmail(email){
+      if(emailRegex.test(email.value)) {
+        removeError(email) 
+        return true
       }
-      setError(radios, errorMsg.cities)
-    })
+      else setError(email, errorMsg.email);
+    }
+  
+
+ function testBirthdate(date) {
+    if(!date.value) {
+      setError(date, errorMsg.birthDate)
+      return false
+    }
+    else removeError(date)
   }
 
-  function tournamentCount() {
-    tournament.addEventListener("change", (e) => {
-      if(integerRegex.test(tournament.value)) removeError(e.target)
-      else setError(e.target, errorMsg.tournament);
-    });
+  function testRadios(radios) {
+    
+    for(let radio in radios) {
+      if(radio.checked) {
+        removeError(radios)
+        return true
+      };
+    };
+    setError(radios, errorMsg.cities)
+  }
+
+  function tournamentCount(tournament) {
+      if(integerRegex.test(tournament.value)) {
+        removeError(tournament)
+        return true
+      }
+      else setError(tournament, errorMsg.tournament);
   };
 
-  testEmail()
-  testBirthdate()
-  tournamentCount()
-  testRadios()
+
+  function conditionsValidation(conditions) {
+    if(!conditions.checked) setError(conditions, errorMsg.conditions)
+    else {
+      removeError(conditions)
+      return true
+    };
+  };
+
+  testNames(firstname), testNames(lastname)
+  testEmail(email)
+  testBirthdate(date)
+  tournamentCount(tournament)
+  testRadios(radios)
+  conditionsValidation(conditions)
+
+  /* if(testEmail() && testBirthdate() && tournamentCount() && testRadios() && conditionsValidation()) return true */
+
 };
 
-formCheck()
 
+function validate() {
+    if(formCheck()) return true
+    else return false
+}
 
-
+submitButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  validate()
+}) 
 
 
 
