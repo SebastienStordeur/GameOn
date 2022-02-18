@@ -8,6 +8,7 @@ const errorMsg = {
   conditions: "Vous devez acceptez les conditions d'utilisation pour continuer"
 };
 
+//DOM elements
 const modalForm = document.getElementById("form");
 const checkedBoxes = document.querySelectorAll(".checkbox-input");
 const inputs = document.querySelectorAll("input[type=text]")
@@ -19,7 +20,7 @@ const tournament = document.querySelector("#quantity");
 const radios = document.getElementsByName("location")
 const conditions = document.querySelector("#checkbox1");
 const validated = document.querySelector(".valid-form")
-const radio = document.querySelector("#location1")
+const radio = document.querySelector("#location1");
 
 //Regex
 const letterRegex = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/;
@@ -43,6 +44,7 @@ function setError(element, error) {
   target.setAttribute("data-error", error);
   target.setAttribute("data-error-visible", true);
 }
+
 //Remove error messages
 function removeError(element) {
   let target = element.parentNode;
@@ -51,9 +53,9 @@ function removeError(element) {
 };
 
 //Check form
-function formCheck(e) {
+function formCheck() {
 
-  function testNames(name){
+  function namesValidation(name){
     if(letterRegex.test(name.value)){
       removeError(name);
       return true;
@@ -63,7 +65,7 @@ function formCheck(e) {
     };
   };
 
-  function testEmail(email){
+  function emailValidation(email){
       if(emailRegex.test(email.value)) {
         removeError(email);
         return true;
@@ -73,7 +75,7 @@ function formCheck(e) {
       };
     };
   
- function testBirthdate(date) {
+ function birthValidation(date) {
     if(!date.value) {
       setError(date, errorMsg.birthDate);
       return false;
@@ -84,18 +86,19 @@ function formCheck(e) {
   };
 
   function testRadios(radios) {
-    for(let radio in radios) {
-      if(radio.checked) {
-        removeError(radio.parentNode)
-        return true
-      } else {
-        setError(radios, errorMsg.cities)
-        return false
-      };
-    };
+    var checkedOne = Array.prototype.slice.call(radios).some(radio => radio.checked)
+    if(checkedOne) {
+      removeError(radio)
+      console.log("checked")
+      return true;
+    } else {
+      setError(radio, errorMsg.cities)
+      console.log("unchecked")
+      return false
+    }
   };
 
-  function tournamentCount(tournament) {
+  function tournamentQuantity(tournament) {
     if(integerRegex.test(tournament.value)) {
       removeError(tournament);
       return true;
@@ -115,15 +118,15 @@ function formCheck(e) {
     };
   };
 
-  testNames(firstname), testNames(lastname)
-  testEmail(email)
-  testBirthdate(date)
-  tournamentCount(tournament)
-  testRadios(radios[0])
+  namesValidation(firstname), namesValidation(lastname)
+  emailValidation(email)
+  birthValidation(date)
+  tournamentQuantity(tournament)
+  testRadios(radios)
   conditionsValidation(conditions)
   
-if(testNames(firstname) && testNames(lastname) && testEmail(email) &&
-  testBirthdate(date) && tournamentCount(tournament) && testRadios(radios[0]) &&
+if(namesValidation(firstname) && namesValidation(lastname) && emailValidation(email) &&
+  birthValidation(date) && tournamentQuantity(tournament) && testRadios(radios) &&
   conditionsValidation(conditions)) return true
 };
 
