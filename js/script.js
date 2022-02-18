@@ -21,6 +21,9 @@ const radios = document.getElementsByName("location")
 const conditions = document.querySelector("#checkbox1");
 const validated = document.querySelector(".valid-form")
 const radio = document.querySelector("#location1");
+const closeBtn = document.querySelector(".close");
+const modal = document.querySelector(".bground");
+const registerBtn = document.querySelector(".valid-btn");
 
 //Regex
 const letterRegex = /^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,}$/;
@@ -29,13 +32,16 @@ const integerRegex = /^\d+$/;
 
 //Close modal function
 function closeModal() {
-  const closeBtn = document.querySelector(".close");
-  const modal = document.querySelector(".bground");
   closeBtn.addEventListener("click", () => {
     inputs.forEach((input) => input.value="");
     checkedBoxes.forEach((checkBox) => checkBox.checked = false);
     modal.style.display = "none";
   });
+  registerBtn.addEventListener("click", () => {
+    inputs.forEach((input) => input.value="");
+    checkedBoxes.forEach((checkBox) => checkBox.checked = false);
+    modal.style.display = "none";
+  })
 };
 
 //Set error messages
@@ -86,14 +92,14 @@ function formCheck() {
   };
 
   function testRadios(radios) {
-    var checkedOne = Array.prototype.slice.call(radios).some(radio => radio.checked)
+    var checkedOne = Array.prototype.slice.call(radios).some(radio => radio.checked);
     if(checkedOne) {
-      removeError(radio)
-      return true;
+      removeError(radio);
+      return true;;
     } else {
-      setError(radio, errorMsg.cities)
-      return false
-    }
+      setError(radio, errorMsg.cities);
+      return false;
+    };
   };
 
   function tournamentQuantity(tournament) {
