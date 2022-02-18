@@ -89,11 +89,9 @@ function formCheck() {
     var checkedOne = Array.prototype.slice.call(radios).some(radio => radio.checked)
     if(checkedOne) {
       removeError(radio)
-      console.log("checked")
       return true;
     } else {
       setError(radio, errorMsg.cities)
-      console.log("unchecked")
       return false
     }
   };
