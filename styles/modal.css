@@ -541,3 +541,9 @@ footer {
   position: absolute;
 }
 
+@-moz-document url-prefix() {
+  .hero-content {
+    z-index: 3;
+    min-width: 350px;
+  }
+}
