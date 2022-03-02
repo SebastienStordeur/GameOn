@@ -554,6 +554,11 @@ footer {
   bottom: 17px;
   position: absolute;
 }
+.valid-btn {
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  width: 182px;
+}
 
 @-moz-document url-prefix() {
   .hero-content {
